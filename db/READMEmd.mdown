@@ -1,0 +1,32 @@
+# Databases description
+
+Basic databases are :
++ user, for storing our users
++ matches , for storing our matches
++ media , for matching a media with an event
++ event , for matching events with matches
++ votes , for user votes
+
+Abbrevations :
++ PK is Primary Key
++ FK is Foreign Key
+
+**user**
+
+| User          | Type          | Notes | Comments |
+| ------------- |:-------------:| -----:| :------- |
+| tbd           | tbd           | tbd   | tbd      | 
+
+**matches**
+
+| Column        | Type          | Notes | Comments |
+| ------------- |:-------------:| :-----:| :------- |
+| match_id      | INT           | PK    | Unique match id, to be assigned on creation      | 
+| match_datetime| DATETIME      |  | Date and time of the match |
+| team_a        | STRING |  | home_team |
+| team_b        | STRING |  | away_team |
+| competition   | STRING |  | string literal for the competition (may change later to a FK to another table)|
+| status        | SHORT |  | enum --> 0 : not started, 1 live , 2 completed |
+
+
+
