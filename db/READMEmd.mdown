@@ -15,7 +15,9 @@ Abbrevations :
 
 | User          | Type          | Notes | Comments |
 | ------------- |:-------------:| -----:| :------- |
-| tbd           | tbd           | tbd   | tbd      | 
+| user_id       | INT           | PK    | user_id  | 
+| name          | STRING        |       | full name   | 
+| tbd           | tbd           |       | tbc once we know methods of login |
 
 **matches**
 
@@ -27,6 +29,34 @@ Abbrevations :
 | team_b        | STRING |  | away_team |
 | competition   | STRING |  | string literal for the competition (may change later to a FK to another table)|
 | status        | SHORT |  | enum --> 0 : not started, 1 live , 2 completed |
+
+**events**
+
+| Column        | Type          | Notes | Comments |
+| ------------- |:-------------:| :-----:| :------- |
+| event_id      | INT           | PK    | Unique event id, to be assigned on creation      | 
+| match_id      | INT      | FK | match_id from matches table |
+| description   | STRING |  | description of the event |
+| question_text        | STRING |  | final question text |
+
+**votes**
+
+| Column        | Type          | Notes | Comments |
+| ------------- |:-------------:| :-----:| :------- |
+| vote_id       | INT           | PK    | Unique vote id, to be assigned on creation      | 
+| user_id       | INT           | FK    | user_id from user table |
+| vote          | BOOL          |       | yes or no |    
+
+**media**
+
+| Column        | Type          | Notes | Comments |
+| ------------- |:-------------:| :-----:| :------- |
+| media_id       | INT           | PK    | Unique media id, to be assigned on creation      | 
+| event_id       | INT           | FK    | event_id from events table |
+| media_type    | SHORT  |  | enum --> 0 : no media , 1 : image , 2 : video url |
+| media_url   | STRING |  | media_url|
+
+
 
 
 
