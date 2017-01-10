@@ -1,0 +1,1 @@
+select * from votes where event_id='15';
