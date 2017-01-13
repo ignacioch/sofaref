@@ -1,11 +1,11 @@
 CREATE TABLE user (
-	user_id int(100),
+	user_id int,
 	username varchar(100),
 	primary key (user_id)
 );
 
 CREATE TABLE matches (
-	match_id int(100),
+	match_id int,
 	match_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	team_a varchar(50),
 	team_b varchar(50),
