@@ -6,7 +6,7 @@ primary key (user_id)
 
 CREATE TABLE matches (
 match_id int(100),
-match_datetime TIMESTAMP,
+match_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 team_a varchar(50),
 team_b varchar(50),
 competition varchar(100),
