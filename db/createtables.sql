@@ -29,7 +29,7 @@ CREATE TABLE votes (
 	user_id int,
 	vote bool,
 	event_id int,
-	primary key (vote_id),
+	primary key (user_id,event_id),
 	foreign key (user_id) REFERENCES user(user_id),
 	foreign key (event_id) REFERENCES events(event_id)
 );
