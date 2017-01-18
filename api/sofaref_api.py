@@ -2,9 +2,9 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flaskext.mysql import MySQL
-from werkzeug import generate_password_hash, check_password_hash
-#General config
 
+
+#General config
 
 app = Flask(__name__)
 
@@ -72,3 +72,4 @@ def get_votes_for_event(event_id):
 	rv = cursor.fetchall()
 	conn.close()
 	return jsonify(rv)
+
