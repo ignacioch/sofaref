@@ -1,7 +1,12 @@
-insert into user(user_id,username)
-values ('0','Vaik');
-insert into user(user_id,username)
-values ('1','Nacho');
+insert into role (role_id,role_name,description)
+values ('0','admin','This is the admin');
+insert into role (role_id,role_name,description)
+values ('1','user', 'This is a user with no permissions');
+
+insert into user(user_id,username,password,role_id)
+values ('0','vaik9','19051989',0);
+insert into user(user_id,username,password,role_id)
+values ('1','ignch','02021990',0);
 
 
 insert into matches (match_id,match_datetime,team_a,team_b,competition,match_status)
@@ -14,7 +19,7 @@ values ('15','1567','Penalty', 'Was it a correct decision?');
 insert into events (event_id,match_id,description,question_text)
 values ('11','1478','Red Card', 'Was it a false decision?');
 
-insert into votes(vote_id, user_id,vote,event_id)
+insert into votes (vote_id, user_id,vote,event_id)
 values ('23','1','0','11');
 insert into votes(vote_id, user_id,vote,event_id)
 values ('27','0','1','15');
