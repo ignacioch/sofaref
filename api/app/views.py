@@ -23,19 +23,7 @@ mysql = MySQL()
 
 # MySQL configurations  
 app.config.from_object('config')
-
-#app.config['MYSQL_DATABASE_USER'] = 'root'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'vaios'
-#app.config['MYSQL_DATABASE_DB'] = 'sofaref'
-#app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-#app.config['MYSQL_DATABASE_HOST'] = 'sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306'
 mysql.init_app(app)
-
-
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://ignch:tsokailo@sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306/sofaref'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:vaios@localhost:3306/sofaref'
-app.config['extend_existing'] = True
 # Create database connection object
 db = SQLAlchemy(app)
 
@@ -44,7 +32,6 @@ db = SQLAlchemy(app)
 Base = automap_base()
 
 # reflect
-#engine = create_engine("mysql+mysqlconnector://ignch:tsokailo@sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306/sofaref")
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 Base.prepare(engine, reflect=True)
 
