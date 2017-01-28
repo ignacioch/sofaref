@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<body>
+
+   <h2 style = "text-align: center;">Interact with SofaRef DB</h2>
+
+   {% for message in messages %}
+   <div>{{ message }}</div>
+   {% endfor %}
+
+
+
+   <form action ="{{ url_for('add_new_element') }}" method = POST>
+      <fieldset>
+         <legend>Please fill the form</legend>
+         {{ form.hidden_tag() }}
+
+         <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+           
+            {{ form.Match_datetime.label }}<br>
+            {{ form.Match_datetime }}
+            <br>
+            {{ form.Id.label }}<br>
+            {{ form.Id }}
+            <br>
+            {{ form.Team_A.label }}<br>
+            {{ form.Team_A }}
+            <br>
+            {{ form.Team_B.label }}<br>
+            {{ form.Team_B }}
+            <br>
+            {{ form.Competition.label }}<br>
+            {{ form.Competition }}
+            <br>
+            {{ form.Match_status.label }}<br>
+            {{ form.Match_status }}
+            <br>
+
+            
+            {{ form.submit }}
+         </div>
+
+      </fieldset>
+   </form>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<body>
+
+   <h2 style = "text-align: center;">Interact with SofaRef DB</h2>
+
+   {% for message in messages %}
+   <div>{{ message }}</div>
+   {% endfor %}
+
+
+
+   <form action ="{{ url_for('add_new_media') }}" method = POST>
+      <fieldset>
+         <legend>Please fill the form</legend>
+         {{ form.hidden_tag() }}
+
+         <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+           
+            {{ form.media_id.label }}<br>
+            {{ form.media_id }}
+            <br>
+            {{ form.event_id.label }}<br>
+            {{ form.event_id }}
+            <br>
+            {{ form.media_type.label }}<br>
+            {{ form.media_type }}
+            <br>
+            {{ form.media_url.label }}<br>
+            {{ form.media_url }}
+            <br>
+            
+
+            
+            {{ form.submit }}
+         </div>
+
+      </fieldset>
+   </form>
+
+</body>
+</html>

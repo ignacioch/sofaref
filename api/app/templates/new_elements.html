@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+   <body>
+   
+      <h2 style = "text-align: center;">Interact with SofaRef DB</h2>
+		
+      {% for message in form.name.errors %}
+         <div>{{ message }}</div>
+      {% endfor %}
+      
+      {% for message in form.email.errors %}
+         <div>{{ message }}</div>
+      {% endfor %}
+      
+      <form action = "http://localhost:5000/addNewElement" method = POST>
+         <fieldset>
+            <legend>Please fill the form</legend>
+            {{ form.hidden_tag() }}
+            
+            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+               {{ form.name.label }}<br>
+               {{ form.name }}
+               <br>
+               
+               {{ form.Action.label }} {{ form.Action }}
+               {{ form.Address.label }}<br>
+               {{ form.Address }}
+               <br>
+               
+               {{ form.email.label }}<br>
+               {{ form.email }}
+               <br>
+               
+               {{ form.Age.label }}<br>
+               {{ form.Age }}
+               <br>
+               
+               {{ form.Type.label }}<br>
+               {{ form.Type }}
+               <br>
+               {{ form.submit }}
+            </div>
+            
+         </fieldset>
+      </form>
+      
+   </body>
+</html>

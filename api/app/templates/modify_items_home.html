@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<body>
+
+   <h2 style = "text-align: center;">Interact with SofaRef DB</h2>
+
+   {% for message in form.Action.errors %}
+   <div>{{ message }}</div>
+   {% endfor %}
+
+
+
+   <form action ="{{ url_for('modify_items') }}" method = POST>
+      <fieldset>
+         <legend>Please fill the form</legend>
+         {{ form.hidden_tag() }}
+
+         <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+            {{ form.Type.label }}<br>
+            {{ form.Type }}
+            <br>
+
+            {{ form.Action.label }} {{ form.Action }}
+      
+            
+            {{ form.submit }}
+         </div>
+
+      </fieldset>
+   </form>
+
+</body>
+</html>

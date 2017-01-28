@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<body>
+
+ <h2 style = "text-align: center;">Interact with SofaRef DB</h2>
+
+ {% with messages = get_flashed_messages() %}
+ {% if messages %}
+ <ul class=flashes>
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+
+<form action ="{{ url_for('add_new_match') }}" method = POST>
+  <fieldset>
+   <legend>Please fill the form</legend>
+   {{ form.hidden_tag() }}
+
+   <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+    
+    {{ form.match_datetime.label }}<br>
+    {{ form.match_datetime }}
+    <br>
+    {{ form.match_id.label }}<br>
+    {{ form.match_id }}
+    <br>
+    {{ form.team_a.label }}<br>
+    {{ form.team_a }}
+    <br>
+    {{ form.team_b.label }}<br>
+    {{ form.team_b }}
+    <br>
+    {{ form.competition.label }}<br>
+    {{ form.competition }}
+    <br>
+    {{ form.match_status.label }}<br>
+    {{ form.match_status }}
+    <br>
+
+    {{ form.submit }}
+  </div>
+
+</fieldset>
+</form>
+
+</body>
+</html>
