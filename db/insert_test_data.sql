@@ -4,9 +4,9 @@ insert into role (role_id,role_name,description)
 values ('1','user', 'This is a user with no permissions');
 
 insert into user(user_id,username,password,role_id)
-values ('0','vaik9','19051989',0);
+values ('0','*','*',0);
 insert into user(user_id,username,password,role_id)
-values ('1','ignch','02021990',0);
+values ('1','*','*',0);
 
 
 insert into matches (match_id,match_datetime,team_a,team_b,competition,match_status)
