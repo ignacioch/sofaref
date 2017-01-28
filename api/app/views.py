@@ -15,19 +15,27 @@ from datetime import datetime
 
 
 
-#logging.basicConfig(filename=datetime.now().strftime('views_%d_%m_%Y.log'),level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(filename=datetime.now().strftime('views_%d_%m_%Y.log'),level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
 
 
 #General config
 mysql = MySQL()
 
-    
-
-# MySQL configurations
+# MySQL configurations  
 app.config.from_object('config')
 
+#app.config['MYSQL_DATABASE_USER'] = 'root'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'vaios'
+#app.config['MYSQL_DATABASE_DB'] = 'sofaref'
+#app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+#app.config['MYSQL_DATABASE_HOST'] = 'sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306'
 mysql.init_app(app)
 
+
+
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://ignch:tsokailo@sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306/sofaref'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:vaios@localhost:3306/sofaref'
+app.config['extend_existing'] = True
 # Create database connection object
 db = SQLAlchemy(app)
 
@@ -36,7 +44,7 @@ db = SQLAlchemy(app)
 Base = automap_base()
 
 # reflect
-
+#engine = create_engine("mysql+mysqlconnector://ignch:tsokailo@sofarefdb.cvsnqtravp5a.us-west-2.rds.amazonaws.com:3306/sofaref")
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 Base.prepare(engine, reflect=True)
 
@@ -79,6 +87,9 @@ admin_permission = Permission(RoleNeed('admin'))
 def home():
     return render_template('index.html')
 
+@app.route('/home')
+def home_page():
+	return render_template('home_page.html')
 
 @app.route('/getActiveMatches')
 def get_active_matches():
@@ -126,23 +137,25 @@ def vote():
 	conn = mysql.connect()
 	cursor = conn.cursor()
 	form = vote_form()
+	print(form.data.items())
 	logging.info('The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
+			print('entered')
 			flash('All fields are required.')
+			print(form.errors)
 			flash(form.errors)
 			return render_template('vote.html', form = form)
 		else:
 			try:
+				print('entered try')
 				cursor.execute('''INSERT into votes (vote_id, user_id,vote,event_id) values (%s,%s,%s,%s)''',(form.vote_id.data,form.user_id.data,form.vote.data,form.event_id.data))
 				conn.commit()
 				conn.close()
 				print(cursor._last_executed)
-				logging.info(cursor._last_executed)
 				return 'Registered'
 			except conn.Error as e:
 				conn.close()
-				logging.error(e)
 				return str(e)
 	elif request.method == 'GET':
 		return render_template('vote.html', form = form)

@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<body>
+
+   <h2 style = "text-align: center;">Interact with SofaRef DB - Home Page</h2>
+
+   
+
+   <form action ="{{ url_for('home_page') }}" method = POST>
+      <fieldset>
+         <legend>Please select :</legend>
+        
+
+         <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+           
+            
+         <a href="{{url_for('get_active_matches') }}"> Get Active Matches</a><br>
+         <a >/getEventsForMatchId/match_id  --- Replace match_id with your number</a><br>
+         <a >/vote</a><br>
+         <a >/getVotesForEventId/event_id  --- Replace event_id with your number</a><br>
+         <a >/modifyItems</a><br>
+        <a href="{{url_for('security.login') }}"> Login </a><br>
+        <a href="{{url_for('security.logout') }}"> Logout</a>
+         </div>
+
+      </fieldset>
+   </form>
+
+</body>
+</html>
