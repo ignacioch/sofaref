@@ -72,7 +72,7 @@ admin_permission = Permission(RoleNeed('admin'))
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home_page.html')
 
 @app.route('/home')
 def home_page():
