@@ -22,7 +22,7 @@ logging.basicConfig(filename=datetime.now().strftime('views_%d_%m_%Y.log'),level
 mysql = MySQL()
 
 # MySQL configurations  
-app.config.from_object('config')
+app.config.from_object('config.DevelopmentConfig')
 mysql.init_app(app)
 # Create database connection object
 db = SQLAlchemy(app)
@@ -114,6 +114,24 @@ def get_events_for_match(match_id):
 	except mysql.connect().Error as err:
 			logging.error(format(err))
 			return format(err)
+
+@app.route('/getMediaForEventId/<event_id>')
+def get_media_for_event(event_id):
+	logging.info('/getMediaForEventId')
+	try:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute('''select media_id,event_id,media_type,media_url from media where event_id=%s''', event_id)
+		rv = cursor.fetchall()
+		conn.close()
+		logging.info('THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
+		logging.info(rv)
+		return jsonify(rv)
+	except mysql.connect().Error as err:
+			logging.error(format(err))
+			return format(err)
+
+
 
 #To see in practice how it reacts. The output is the default http 200 for success or any other for error
 @app.route('/vote',methods=['GET','POST'])

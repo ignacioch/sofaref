@@ -3,11 +3,15 @@ values ('0','admin','This is the admin');
 insert into role (role_id,role_name,description)
 values ('1','user', 'This is a user with no permissions');
 
-insert into user(user_id,username,password,role_id)
-values ('0','*','*',0);
-insert into user(user_id,username,password,role_id)
-values ('1','*','*',0);
+insert into user(user_id,email,username,password,active)
+values ('0','test@test.com','*','*',1);
+insert into user(user_id,email,username,password,active)
+values ('1','test@test.gr','*','*',1);
 
+insert into roles_users(user_id, role_id)
+values (0,0);
+insert into roles_users(user_id, role_id)
+values (1,0);
 
 insert into matches (match_id,match_datetime,team_a,team_b,competition,match_status)
 values ('1567',NOW(), 'Arsenal','Hull','BPL','0');

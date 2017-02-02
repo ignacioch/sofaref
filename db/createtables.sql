@@ -1,65 +1,65 @@
 CREATE TABLE role (
-role_id int,
-role_name varchar(100),
-description varchar(100),
-primary key (role_id)
+    role_id INT,
+    role_name VARCHAR(100),
+    description VARCHAR(100),
+    PRIMARY KEY (role_id)
 );
 
 CREATE TABLE roles_users (
-user_id int,
-role_id int,
-primary key (user_id)
+    user_id INT,
+    role_id INT,
+    PRIMARY KEY (user_id)
 );
 
-
-
 CREATE TABLE user (
-user_id int,
-email varchar(100),
-username varchar(100),
-password varchar(100),
-role_id int,
-active boolean,
-primary key (user_id),
-foreign key (role_id) REFERENCES role(role_id),
-UNIQUE (email)
+    user_id INT,
+    email VARCHAR(100),
+    username VARCHAR(100),
+    password VARCHAR(100),
+    active BOOLEAN,
+    PRIMARY KEY (user_id),
+    UNIQUE (email)
 );
 
 CREATE TABLE matches (
-match_id int(100),
-match_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-team_a varchar(50),
-team_b varchar(50),
-competition varchar(100),
-match_status tinyint,
-primary key (match_id)
+    match_id INT(100),
+    match_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    team_a VARCHAR(50),
+    team_b VARCHAR(50),
+    competition VARCHAR(100),
+    match_status TINYINT,
+    PRIMARY KEY (match_id)
 );
 
 CREATE TABLE events (
-event_id int,
-match_id int,
-description varchar(255),
-question_text varchar(255),
-primary key (event_id),
-foreign key (match_id) REFERENCES matches(match_id)
+    event_id INT,
+    match_id INT,
+    description VARCHAR(255),
+    question_text VARCHAR(255),
+    PRIMARY KEY (event_id),
+    FOREIGN KEY (match_id)
+        REFERENCES matches (match_id)
 );
 
 
 CREATE TABLE votes (
-vote_id int,
-user_id int,
-vote bool,
-event_id int,
-primary key (user_id,event_id),
-foreign key (user_id) REFERENCES user(user_id),
-foreign key (event_id) REFERENCES events(event_id)
+    vote_id INT,
+    user_id INT,
+    vote BOOL,
+    event_id INT,
+    PRIMARY KEY (user_id , event_id),
+    FOREIGN KEY (user_id)
+        REFERENCES user (user_id),
+    FOREIGN KEY (event_id)
+        REFERENCES events (event_id)
 );
 
 CREATE TABLE media (
-media_id int,
-event_id int,
-media_type tinyint,
-media_url varchar(255),
-primary key (media_id),
-foreign key (event_id) REFERENCES events(event_id)
+    media_id INT,
+    event_id INT,
+    media_type TINYINT,
+    media_url VARCHAR(255),
+    PRIMARY KEY (media_id),
+    FOREIGN KEY (event_id)
+        REFERENCES events (event_id)
 );

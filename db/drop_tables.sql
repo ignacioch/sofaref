@@ -1,5 +1,7 @@
+DROP TABLE votes;
+DROP TABLE media;
 DROP TABLE events;
 DROP TABLE matches;
-DROP TABLE media;
 DROP TABLE user;
-DROP TABLE votes;
+DROP TABLE role;
+DROP TABLE roles_users;
