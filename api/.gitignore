@@ -2,3 +2,4 @@ hello.py
 run.py
 *.log
 config.py
+__pycache__
