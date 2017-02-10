@@ -83,7 +83,7 @@ def get_active_matches():
 		cursor.execute('''SELECT match_id,match_datetime,team_a,team_b,competition,match_status FROM matches WHERE match_status=1''')
 		rv = cursor.fetchall()
 		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+cursor._last_executed)
-		logging.debug('views.py : '+rv)
+		logging.debug('views.py : '+format(rv))
 		conn.close()
 		return jsonify(rv)
 	except mysql.connect().Error as err:
@@ -105,7 +105,7 @@ def get_events_for_match(match_id):
 		rv = cursor.fetchall()
 		conn.close()
 		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.debug('views.py : '+rv)
+		logging.debug('views.py : '+format(rv))
 		return jsonify(rv)
 	except mysql.connect().Error as err:
 			logging.error('views.py : '+format(err))
@@ -121,7 +121,7 @@ def get_media_for_event(event_id):
 		rv = cursor.fetchall()
 		conn.close()
 		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.debug('views.py : '+rv)
+		logging.debug('views.py : '+format(rv))
 		return jsonify(rv)
 	except mysql.connect().Error as err:
 			logging.error('views.py : '+format(err))
@@ -170,7 +170,7 @@ def get_votes_for_event(event_id):
 		cursor.execute('''SELECT vote_id,user_id,vote,event_id from votes where event_id=%s''' , event_id)
 		rv = cursor.fetchall()
 		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.debug('views.py : '+rv)
+		logging.debug('views.py : '+format(rv))
 		conn.close()
 		return jsonify(rv)
 	except mysql.connect().Error as err:
