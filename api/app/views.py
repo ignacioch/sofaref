@@ -14,15 +14,11 @@ import logging
 from datetime import datetime
 
 
-
-logging.basicConfig(filename=datetime.now().strftime('views_%d_%m_%Y.log'),level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
-
-
 #General config
 mysql = MySQL()
 
 # MySQL configurations  
-app.config.from_object('config.DevelopmentConfig')
+#app.config.from_object('config.DevelopmentConfig')
 mysql.init_app(app)
 # Create database connection object
 db = SQLAlchemy(app)
@@ -80,24 +76,24 @@ def home_page():
 
 @app.route('/getActiveMatches')
 def get_active_matches():
-	logging.info('/getActiveMatches')
+	logging.info('views.py : /getActiveMatches')
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		cursor.execute('''SELECT match_id,match_datetime,team_a,team_b,competition,match_status FROM matches WHERE match_status=1''')
 		rv = cursor.fetchall()
-		logging.info('THE QUERY WAS SUCCESFULL: '+cursor._last_executed)
-		logging.info(rv)
+		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+cursor._last_executed)
+		logging.debug('views.py : '+rv)
 		conn.close()
 		return jsonify(rv)
 	except mysql.connect().Error as err:
-		logging.error(format(err))
+		logging.error('views.py : '+format(err))
 		return format(err)
 
 
 @app.route('/getEventsForMatchId/<match_id>')
 def get_events_for_match(match_id):
-	logging.info('/getEventsForMatchId')
+	logging.info('views.py : /getEventsForMatchId')
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
@@ -108,27 +104,27 @@ def get_events_for_match(match_id):
 			WHERE matches.match_id = %s''', match_id)
 		rv = cursor.fetchall()
 		conn.close()
-		logging.info('THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.info(rv)
+		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
+		logging.debug('views.py : '+rv)
 		return jsonify(rv)
 	except mysql.connect().Error as err:
-			logging.error(format(err))
+			logging.error('views.py : '+format(err))
 			return format(err)
 
 @app.route('/getMediaForEventId/<event_id>')
 def get_media_for_event(event_id):
-	logging.info('/getMediaForEventId')
+	logging.info('views.py : /getMediaForEventId')
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		cursor.execute('''select media_id,event_id,media_type,media_url from media where event_id=%s''', event_id)
 		rv = cursor.fetchall()
 		conn.close()
-		logging.info('THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.info(rv)
+		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
+		logging.debug('views.py : '+rv)
 		return jsonify(rv)
 	except mysql.connect().Error as err:
-			logging.error(format(err))
+			logging.error('views.py : '+format(err))
 			return format(err)
 
 
@@ -138,30 +134,28 @@ def get_media_for_event(event_id):
 @login_required
 @admin_permission.require()
 def vote():
-	logging.info('vote')
+	logging.info('views.py : vote')
 	conn = mysql.connect()
 	cursor = conn.cursor()
 	form = vote_form()
 	print(form.data.items())
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
-			print('entered')
 			flash('All fields are required.')
-			print(form.errors)
 			flash(form.errors)
 			return render_template('vote.html', form = form)
 		else:
 			try:
-				print('entered try')
 				cursor.execute('''INSERT into votes (vote_id, user_id,vote,event_id) values (%s,%s,%s,%s)''',(form.vote_id.data,form.user_id.data,form.vote.data,form.event_id.data))
 				conn.commit()
 				conn.close()
-				print(cursor._last_executed)
+				logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+cursor._last_executed)
 				return 'Registered'
 			except conn.Error as e:
 				conn.close()
-				return str(e)
+				logging.error('views.py : '+format(e))
+				return format(e)
 	elif request.method == 'GET':
 		return render_template('vote.html', form = form)
 		
@@ -169,18 +163,18 @@ def vote():
 
 @app.route('/getVotesForEventId/<event_id>')
 def get_votes_for_event(event_id):
-	logging.info('getVotesForEventId')
+	logging.info('views.py : getVotesForEventId')
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor()
 		cursor.execute('''SELECT vote_id,user_id,vote,event_id from votes where event_id=%s''' , event_id)
 		rv = cursor.fetchall()
-		logging.info('THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
-		logging.info(rv)
+		logging.debug('views.py : THE QUERY WAS SUCCESFULL: '+ cursor._last_executed)
+		logging.debug('views.py : '+rv)
 		conn.close()
 		return jsonify(rv)
 	except mysql.connect().Error as err:
-		logging.error(format(err))
+		logging.error('views.py : '+format(err))
 		return format(err)
 
 
@@ -188,9 +182,9 @@ def get_votes_for_event(event_id):
 @login_required
 @admin_permission.require()
 def modify_items():
-	logging.info('/modifyItems')
+	logging.info('views.py : /modifyItems')
 	form = first_selection()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -219,9 +213,9 @@ def modify_items():
 @login_required
 @admin_permission.require()
 def add_new_match():
-	logging.info('/addNewMatch')
+	logging.info('views.py : /addNewMatch')
 	form = add_match()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -239,9 +233,9 @@ def add_new_match():
 @login_required
 @admin_permission.require()
 def update_current_match():
-	logging.info('/updateMatch')
+	logging.info('views.py : /updateMatch')
 	form = update_match()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -259,9 +253,9 @@ def update_current_match():
 @login_required
 @admin_permission.require()
 def add_new_event():
-	logging.info('/addNewEvent')
+	logging.info('views.py : /addNewEvent')
 	form = add_event()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -278,9 +272,9 @@ def add_new_event():
 @login_required
 @admin_permission.require()
 def update_current_event():
-	logging.info('/updateEvent')
+	logging.info('views.py : /updateEvent')
 	form = update_event()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -297,9 +291,9 @@ def update_current_event():
 @login_required
 @admin_permission.require()
 def add_new_media():
-	logging.info('/addNewMedia')
+	logging.info('views.py : /addNewMedia')
 	form = add_media()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')
@@ -316,9 +310,9 @@ def add_new_media():
 @login_required
 @admin_permission.require()
 def update_current_media():
-	logging.info('/updateMedia')
+	logging.info('views.py : /updateMedia')
 	form = update_media()
-	logging.info('The form was: ' + str(form.data.items()))
+	logging.debug('views.py : The form was: ' + str(form.data.items()))
 	if request.method == 'POST':
 		if form.validate() == False:
 			flash('All fields are required.')

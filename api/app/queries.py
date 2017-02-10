@@ -3,10 +3,8 @@ from datetime import datetime
 import mysql.connector
 
 
-logging.basicConfig(filename=datetime.now().strftime('queries_%d_%m_%Y.log'),level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')
-
-
 def add_match_fn(args,mysql):
+	logging.info('queries.py : add_match_fn')
 	match_id = args.match_id.data
 	match_datetime = args.match_datetime.data
 	team_a = args.team_a.data
@@ -19,7 +17,7 @@ def add_match_fn(args,mysql):
 	for fieldname, value in args.data.items():
 		if value==None or value=="":
 			none_element = True
-			logging.error('Forgot an attribute! -'+fieldname)
+			logging.error('queries.py : Forgot an attribute! -'+fieldname)
 			raise ValueError('Please input all arguments for the selected action : '+fieldname)
 
 	#Used the boolean varieble none_element to check if any of the elements are empty
@@ -30,16 +28,17 @@ def add_match_fn(args,mysql):
 		try:
 			cursor.execute(query,(match_id,match_datetime, team_a,team_b,competition,match_status))
 		except cnx.Error as err:
-				logging.error('Inside queries - add_match')
-				logging.error(format(err))
+				logging.error('queries.py : Inside queries - add_match')
+				logging.error('queries.py : '+format(err))
 				return format(err)
 		cnx.commit()
 		cnx.close()
-		logging.info(cursor._last_executed)
-		logging.info('Query completed '+ query %(match_id,match_datetime, team_a,team_b,competition,match_status))
+		logging.debug('queries.py : '+cursor._last_executed)
+		logging.debug('queries.py : Query completed '+ query %(match_id,match_datetime, team_a,team_b,competition,match_status))
 		return (cursor._last_executed)
 
 def update_match_fn(args,mysql):
+	logging.info('queries.py : update_match_fn')
 	#This is doing multiple queries for each element to update. Should find something to do one query
 			#Need to be careful for SQL injection
 	match_id = args.match_id.data
@@ -61,20 +60,21 @@ def update_match_fn(args,mysql):
 			try:
 				cursor.execute(sql, (value,match_id))
 			except cnx.Error as err:
-				logging.error('Inside queries - update_match')
-				logging.error(format(err))
+				logging.error('queries.py : Inside queries - update_match')
+				logging.error('queries.py : '+format(err))
 				return format(err)
 			cnx.commit()
 			cursor.close()
 			cnx.close()
-			logging.info(cursor._last_executed)
+			logging.debug('queries.py : '+cursor._last_executed)
 			result+=cursor._last_executed + ' '
-			logging.info('Query completed '+ sql %(value,match_id))
+			logging.debug('queries.py : Query completed '+ sql %(value,match_id))
 	
 	return (result)
 	#return (cursor._last_executed)
 
 def add_event_fn(args,mysql):
+	logging.info('queries.py : add_event_fn')
 	event_id = args.event_id.data
 	match_id = args.match_id.data
 	description = args.description.data
@@ -85,22 +85,23 @@ def add_event_fn(args,mysql):
 	for fieldname, value in args.data.items():
 		if value==None or value=="":
 			none_element = True
-			logging.error('Forgot an attribute!- '+fieldname)
+			logging.error('queries.py : Forgot an attribute!- '+fieldname)
 			raise ValueError('Please input all arguments for the selected action : '+fieldname)
 	if none_element==False:
 		query = ("INSERT into events (event_id,match_id,description,question_text) values (%s, %s,%s, %s) ")
 		try:
 			cursor.execute(query, (event_id,match_id,description,question))
 		except cnx.Error as err:
-				logging.error('Inside queries - add_event')
-				logging.error(format(err))
+				logging.error('queries.py : Inside queries - add_event')
+				logging.error('queries.py : '+format(err))
 				return format(err)
 		cnx.commit()
 		cnx.close()
-		logging.info(cursor._last_executed)
+		logging.debug('queries.py : '+cursor._last_executed)
 		return (cursor._last_executed)
 
 def update_event_fn(args,mysql):
+	logging.info('queries.py : update_event_fn')
 	event_id = args.event_id.data
 	match_id = args.match_id.data
 	description = args.description.data
@@ -115,17 +116,18 @@ def update_event_fn(args,mysql):
 			try:
 				cursor.execute(sql, (value,event_id))
 			except cnx.Error as err:
-				logging.error('Inside queries - update_event')
-				logging.error(format(err))
+				logging.error('queries.py : Inside queries - update_event')
+				logging.error('queries.py : '+format(err))
 				return format(err)
 			cnx.commit()
 			cursor.close()
 			cnx.close()
-			logging.info(cursor._last_executed)
+			logging.debug('queries.py : '+cursor._last_executed)
 			result+=cursor._last_executed + ' '
 	return (result)		
 
 def add_media_fn(args,mysql):
+	logging.info('queries.py : add_media_fn')
 	media_id = args.media_id.data
 	event_id = args.event_id.data
 	media_type = args.media_type.data
@@ -136,22 +138,23 @@ def add_media_fn(args,mysql):
 	for fieldname, value in args.data.items():
 		if value==None or value=="":
 			none_element = True
-			logging.error('Forgot an attribute!- '+fieldname)
+			logging.error('queries.py : Forgot an attribute!- '+fieldname)
 			raise ValueError('Please input all arguments for the selected action : '+fieldname)
 	if none_element==False:
 		query = ("insert into media(media_id,event_id,media_type,media_url) values (%s, %s,%s, %s)")
 		try:
 			cursor.execute(query, (media_id,event_id,media_type,media_url))
 		except cnx.Error as err:
-			logging.error('Inside queries - add_media')
-			logging.error(format(err))
+			logging.error('queries.py : Inside queries - add_media')
+			logging.error('queries.py : '+format(err))
 			return format(err)
 		cnx.commit()
 		cnx.close()
-		logging.info(cursor._last_executed)
+		logging.debug('queries.py : '+cursor._last_executed)
 		return (cursor._last_executed)	
 
 def update_media_fn(args,mysql):
+	logging.info('queries.py : update_media_fn')
 	media_id = args.media_id.data
 	event_id = args.event_id.data
 	media_type = args.media_type.data
@@ -167,13 +170,13 @@ def update_media_fn(args,mysql):
 			try:
 				cursor.execute(sql, (value,media_id))
 			except cnx.Error as err:
-				logging.error('Inside queries - update_media')
-				logging.error(format(err))
+				logging.error('queries.py : Inside queries - update_media')
+				logging.error('queries.py : '+format(err))
 				return format(err)
 			cnx.commit()
 			cursor.close()
 			cnx.close()
-			logging.info(cursor._last_executed)
+			logging.debug('queries.py : '+cursor._last_executed)
 			result+=cursor._last_executed + ' '
 	return (result)
 
